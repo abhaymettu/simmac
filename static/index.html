@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimMac</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0d1226; overflow: hidden; }
+  canvas { display: block; margin: 0 auto; image-rendering: pixelated; image-rendering: crisp-edges; }
+  #err { position: fixed; left: 16px; bottom: 16px; color: #f6e7c1; font: 14px/1.4 -apple-system, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<canvas id="view" aria-label="This Mac drawn as an isometric pixel city. Buildings are apps, cars are processes, arcs are network traffic." role="img"></canvas>
+<div id="err" role="status"></div>
+<script src="city.js"></script>
+</body>
+</html>

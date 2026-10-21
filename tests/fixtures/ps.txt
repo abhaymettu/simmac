@@ -1,0 +1,12 @@
+    1     0   0.6  0.1  25376 /sbin/launchd
+  107 99970  12.5  0.8 197568 /Users/someone/.local/bin/claude
+  124   107   0.0  0.0   7472 intentd
+  125   107   1.0  0.1  36304 npm exec @playwright/mcp@latest
+  126   107   3.2  0.3  65104 node
+  210     1  20.0  1.5 512000 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+  211   210  35.5  0.9 307200 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/1/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)
+  300     1   0.1  0.2  40960 /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder
+  301     1   0.0  0.0   2048 /usr/libexec/logd
+  400     1  62.3  0.5 102400 postgres: checkpointer
+garbage line
+  500     1   x.x  0.0   1024 /bin/broken
