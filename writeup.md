@@ -19,7 +19,7 @@ The second clip runs the same live city while the sky turns through a whole day 
 - A small Python server, standard library only. It reads `ps`, `vm_stat`, `netstat -ib` and the load average, groups processes into apps, and serves one JSON snapshot a second on localhost.
 - A single canvas page, with no framework and no downloads. It draws a 640x360 pixel buffer and scales it up with smoothing off. It includes a hand-made 3x5 pixel font for the labels and the HUD.
 - A recorder that drives headless Chrome, captures the canvas with MediaRecorder, and converts the result with ffmpeg.
-- 21 tests: the parsers, the model and the server, plus two smoke tests that render the page against a fake Mac and check what it drew.
+- 22 tests: the parsers, the model and the server, plus two smoke tests that render the page against a fake Mac and check what it drew.
 
 The one real bug so far: in headless Chrome on macOS, animation frames sometimes never arrive because Chrome can't start its display link. Tests failed about one run in four. The page now also draws on a 40 ms timer, and a test turns animation frames off to prove it.
 
