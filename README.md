@@ -64,7 +64,7 @@ Two clips recorded on this Mac at about 00:40 on Oct 21, 2026 are in `media/`:
 python3 -m unittest discover -s tests -t .
 ```
 
-There are 21 tests:
+There are 22 tests:
 - **Parsers:** `ps` (including bad lines, app-bundle grouping and process titles), `vm_stat`, `netstat -ib` (address rows not double-counted, skipped interfaces) and the load average.
 - **City model:** grouping, sorting, redaction, network rates, counter resets, and CPU and memory fractions.
 - **Server:** snapshot JSON, static page, clip upload, render reports, error codes, and localhost-only binding.

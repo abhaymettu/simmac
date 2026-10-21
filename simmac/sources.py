@@ -55,6 +55,9 @@ def app_name(command: str) -> str:
     if command.startswith("/"):
         return command.rstrip("/").rsplit("/", 1)[-1] or command
     first = command.split()[0] if command.split() else command
+    # A relative path like ".venv/bin/python" keeps only its base name, so no
+    # local directory reaches the page.
+    first = first.rstrip("/").rsplit("/", 1)[-1] or first
     # Process titles like "postgres: writer" name the program before the colon.
     return first.rstrip(":") or first
 

@@ -27,6 +27,13 @@ class PsTest(unittest.TestCase):
         self.assertEqual(names, ["launchd", "claude", "intentd", "npm", "node", "Google Chrome",
                                  "Google Chrome", "Finder", "logd", "postgres"])
 
+    def test_app_name_keeps_only_the_base_name_of_relative_paths(self):
+        self.assertEqual(app_name(".venv/bin/python"), "python")
+        self.assertEqual(app_name("./node_modules/.bin/vite --port 3000"), "vite")
+        self.assertEqual(app_name("scripts/run.sh"), "run.sh")
+        self.assertEqual(app_name("postgres: writer"), "postgres")
+        self.assertEqual(app_name("python3"), "python3")
+
     def test_district(self):
         self.assertEqual(district("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"), "apps")
         self.assertEqual(district("/System/Library/CoreServices/Finder.app/Contents/MacOS/Finder"), "system")
