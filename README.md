@@ -78,7 +78,7 @@ Ten full runs in a row passed here, taking 13 to 42 seconds each, mostly the Chr
 ## Limits
 
 - macOS only. The parsers read macOS command output.
-- At most 60 buildings: the 60 apps using the most memory. An app that drops out stays for 10 seconds, then its building sinks.
+- At most 60 live buildings: the 60 apps using the most memory. An app that drops out stays for 10 seconds, then its building sinks, so the HUD's building count can briefly read above 60 (the poster frame shows 71).
 - CPU per app comes from `ps`, which averages over time, so spikes show up smoothed.
 - It reads `ps` once a second. On a busy machine one read took up to 1.2 s here, so updates can lag.
 - The city layout is fixed at 20 by 20 tiles. Lots are assigned when an app first appears, so a building keeps its place.
