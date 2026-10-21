@@ -52,11 +52,11 @@ python3 scripts/record_clip.py --seconds 20 --out media --query cycle=20
 
 This opens the page in headless Chrome in record mode, waits for the clip, then converts it to MP4 with ffmpeg and saves a poster frame. It needs Google Chrome and ffmpeg.
 
-Two clips recorded on this Mac on Oct 21, 2026 just after midnight are in `media/`:
+Two clips recorded on this Mac at about 00:40 on Oct 21, 2026 are in `media/`:
 - `simmac-20s.mp4`: 20.0 s, 1280x720, live data at the real time (night).
-- `simmac-20s-cycle20.mp4`: 20.0 s, the same live data with the sky sped up to a full day in 20 seconds. **The sky in this clip is a time-lapse; the numbers are real.**
+- `simmac-20s-cycle20.mp4`: 19.9 s, the same live data with the sky sped up to a full day in 20 seconds. **The sky in this clip is a time-lapse; the numbers are real.**
 
-**Frame rate, honestly:** headless Chrome captured 297 frames (live clip) and 267 frames (cycle clip) in 20 seconds, so about 13 to 15 frames a second. The MP4s are encoded at 30 fps by repeating frames. A visible browser window draws more smoothly. I didn't measure its frame rate.
+**Frame rate, honestly:** headless Chrome captured 284 frames (live clip) and 349 frames (cycle clip) in 20 seconds, so about 14 to 17 frames a second. The MP4s are encoded at 30 fps by repeating frames. A visible browser window draws more smoothly. I didn't measure its frame rate.
 
 ## Tests
 
@@ -64,13 +64,16 @@ Two clips recorded on this Mac on Oct 21, 2026 just after midnight are in `media
 python3 -m unittest discover -s tests -t .
 ```
 
-There are 20 tests:
+There are 21 tests:
 - **Parsers:** `ps` (including bad lines, app-bundle grouping and process titles), `vm_stat`, `netstat -ib` (address rows not double-counted, skipped interfaces) and the load average.
 - **City model:** grouping, sorting, redaction, network rates, counter resets, and CPU and memory fractions.
 - **Server:** snapshot JSON, static page, clip upload, render reports, error codes, and localhost-only binding.
-- **Render smoke test:** loads the page in headless Chrome against a fake Mac with 12 apps. It checks that the page reports drawing 60 frames with all 12 apps as buildings and at least 6 cars, and that a 1280x720 screenshot has more than 30 distinct colors. It is skipped if Chrome isn't installed.
+- **Render smoke tests** (two), in headless Chrome against a fake Mac with 12 apps:
+  - The page must report drawing 60 frames with all 12 apps as buildings and at least 6 cars, and the canvas image it sends back must be 16:9 with more than 30 distinct colors.
+  - The page must keep drawing when animation frames are turned off (`?noraf`). This is the real failure found while building: Chrome on macOS sometimes can't start its display link in a headless window (`CVDisplayLinkCreateWithCGDisplay failed`), so animation frames never arrive. The page now also schedules each frame on a 40 ms timer. With the timer removed, this test fails.
+  - Both are skipped if Chrome isn't installed.
 
-The full suite took about 21 seconds here, most of it the Chrome test.
+Ten full runs in a row passed here, taking 13 to 42 seconds each, mostly the Chrome tests. The machine was under heavy load from other jobs at the time.
 
 ## Limits
 

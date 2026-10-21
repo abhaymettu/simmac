@@ -384,15 +384,27 @@ function loop(now) {
     vctx.drawImage(buf, 0, 0, view.width, view.height);
     if (++drawnFrames === 60) report();
   }
-  requestAnimationFrame(loop);
+  schedule();
 }
-requestAnimationFrame(loop);
+// Draw on the next animation frame, or after 40 ms if no frame comes. Chrome on
+// macOS ties animation frames to a display link, which can fail to start in a
+// headless window, leaving the page alive but never drawing.
+// ?noraf turns animation frames off, to test the timer path (see tests).
+if (params.has("noraf")) window.requestAnimationFrame = () => 0;
+function schedule() {
+  let done = false;
+  const go = () => { if (!done) { done = true; loop(performance.now()); } };
+  requestAnimationFrame(go);
+  setTimeout(go, 40);
+}
+schedule();
 
 function report() {
   const px = ctx.getImageData(0, 0, W, H).data, colors = new Set();
   for (let i = 0; i < px.length; i += 4 * 37) colors.add((px[i] << 16) | (px[i + 1] << 8) | px[i + 2]);
   const body = { frame: drawnFrames, buildings: drawnBuildings, apps: snap.apps.length, cars: cars.length, arcs: arcs.length,
     colors: colors.size, night: Number(night.toFixed(2)) };
+  if (params.has("reportpng")) body.png = view.toDataURL("image/png"); // what the viewer sees, for tests
   window.simmacReport = body;
   fetch("/api/rendered", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
 }

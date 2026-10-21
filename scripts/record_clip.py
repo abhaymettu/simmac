@@ -16,6 +16,7 @@ import threading
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from simmac.chrome import NO_THROTTLE, stop_chrome  # noqa: E402
 from simmac.server import serve  # noqa: E402
 
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
@@ -34,17 +35,17 @@ def main():
         url = "http://127.0.0.1:%d/?record=%d" % (httpd.server_address[1], args.seconds)
         if args.query:
             url += "&" + args.query
-        chrome = subprocess.Popen([CHROME, "--headless=new", "--window-size=1280,720", "--hide-scrollbars",
+        chrome = subprocess.Popen([CHROME, "--headless=new", "--window-size=1280,720"] + NO_THROTTLE + [ "--hide-scrollbars",
                                    "--user-data-dir=" + os.path.join(tmp, "profile"), url],
-                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                      start_new_session=True)
         webm = os.path.join(tmp, "clip.webm")
         deadline = time.time() + args.seconds + 60
         try:
             while time.time() < deadline and not os.path.exists(webm):
                 time.sleep(0.5)
         finally:
-            chrome.terminate()
-            chrome.wait(15)
+            stop_chrome(chrome)
             httpd.shutdown()
         if not os.path.exists(webm):
             sys.exit("The page never uploaded a clip.")
